@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:views="clr-namespace:SmartHomeApp.Views"
-       x:Class="SmartHomeApp.AppShell">
+       xmlns:views="clr-namespace:HouseBouncer.Views"
+       x:Class="HouseBouncer.AppShell">
 
-    <ShellContent 
-        Title="Home" 
-        ContentTemplate="{DataTemplate views:HomePage}" 
-        Route="home" />
-
-    <ShellContent 
-        Title="Room" 
-        ContentTemplate="{DataTemplate views:RoomPage}" 
-        Route="room" />
-
-    <ShellContent 
-        Title="Device" 
-        ContentTemplate="{DataTemplate views:DevicePage}" 
-        Route="device" />
+    <!-- Only include Home in the Flyout Menu -->
+    <FlyoutItem Title="Home" Icon="home_icon.png">
+        <ShellContent 
+            Title="Home" 
+            ContentTemplate="{DataTemplate views:HomePage}" 
+            Route="home" />
+    </FlyoutItem>
 
 </Shell>

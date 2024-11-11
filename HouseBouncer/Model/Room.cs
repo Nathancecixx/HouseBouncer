@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace SmartHomeApp.Models
+namespace HouseBouncer.Models
 {
     public class Room
     {

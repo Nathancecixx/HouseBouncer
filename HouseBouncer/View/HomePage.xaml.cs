@@ -1,8 +1,9 @@
-﻿using SmartHomeApp.Models;
-using SmartHomeApp.ViewModels;
-//using Xamarin.Forms;
+﻿using HouseBouncer.Models;
+using HouseBouncer.ViewModels;
+using Microsoft.Maui.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace SmartHomeApp.Views
+namespace HouseBouncer.Views
 {
     public partial class HomePage : ContentPage
     {
@@ -11,7 +12,12 @@ namespace SmartHomeApp.Views
         public HomePage()
         {
             InitializeComponent();
-            viewModel = BindingContext as HomeViewModel;
+
+            // Resolve the HomeViewModel from DI
+            viewModel = (Application.Current as App).Services.GetService<HomeViewModel>();
+
+            // Set the BindingContext
+            BindingContext = viewModel;
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

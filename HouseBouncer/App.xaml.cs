@@ -1,15 +1,21 @@
 ﻿using Microsoft.Maui.Controls;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace SmartHomeApp
+namespace HouseBouncer
 {
     public partial class App : Application
     {
-        public App()
+        public IServiceProvider Services { get; }
+
+        public App(IServiceProvider services)
         {
             InitializeComponent();
 
+            Services = services;
+
             // Set the Shell as the main page
-            MainPage = new AppShell();
+            MainPage = services.GetRequiredService<AppShell>();
         }
     }
 }

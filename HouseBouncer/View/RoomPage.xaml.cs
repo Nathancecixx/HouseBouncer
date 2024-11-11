@@ -1,8 +1,8 @@
-﻿using SmartHomeApp.Models;
-using SmartHomeApp.ViewModels;
+﻿using HouseBouncer.Models;
+using HouseBouncer.ViewModels;
 //using Xamarin.Forms;
 
-namespace SmartHomeApp.Views
+namespace HouseBouncer.Views
 {
     public partial class RoomPage : ContentPage
     {

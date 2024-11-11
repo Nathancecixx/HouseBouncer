@@ -1,16 +1,16 @@
-﻿using SmartHomeApp.Models;
-using SmartHomeApp.Services;
+﻿using HouseBouncer.Models;
+using HouseBouncer.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 //using Xamarin.Forms;
 
-namespace SmartHomeApp.ViewModels
+namespace HouseBouncer.ViewModels
 {
     [QueryProperty(nameof(RoomId), "roomId")]
     public class RoomViewModel : BaseViewModel
     {
-        private readonly DeviceManager _dataService;
+        private readonly DataService _dataService;
 
         private string roomId;
         public string RoomId
@@ -30,7 +30,7 @@ namespace SmartHomeApp.ViewModels
         public RoomViewModel()
         {
             Title = "Room";
-            _dataService = new DeviceManager();
+            _dataService = new DataService();
             Devices = new ObservableCollection<DeviceModel>();
             DeviceSelectedCommand = new Command<DeviceModel>(OnDeviceSelected);
         }

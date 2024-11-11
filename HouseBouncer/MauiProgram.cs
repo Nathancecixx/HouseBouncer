@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using SmartHomeApp;
+using HouseBouncer.Services;
+using HouseBouncer.ViewModels;
+using HouseBouncer.Views;
 
-namespace SmartHomeApp
+namespace HouseBouncer
 {
     public static class MauiProgram
     {
@@ -19,6 +21,23 @@ namespace SmartHomeApp
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            // Register services
+            builder.Services.AddSingleton<DataService>();
+            builder.Services.AddTransient<IDialogService, DialogService>();
+
+            // Register ViewModels
+            builder.Services.AddTransient<HomeViewModel>();
+            builder.Services.AddTransient<RoomViewModel>();
+            builder.Services.AddTransient<DeviceViewModel>();
+
+            // Register Pages (if you want to resolve them via DI)
+            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<RoomPage>();
+            builder.Services.AddTransient<DevicePage>();
+
+            // Register AppShell
+            builder.Services.AddSingleton<AppShell>();
 
             return builder.Build();
         }

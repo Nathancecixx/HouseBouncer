@@ -1,7 +1,7 @@
-﻿using SmartHomeApp.Views;
-//using Xamarin.Forms;
+﻿using Microsoft.Maui.Controls;
+using HouseBouncer.Views;
 
-namespace SmartHomeApp
+namespace HouseBouncer
 {
     public partial class AppShell : Shell
     {
@@ -9,7 +9,7 @@ namespace SmartHomeApp
         {
             InitializeComponent();
 
-            // Register routes for navigation
+            // Register routes for Room and Device pages
             Routing.RegisterRoute("room", typeof(RoomPage));
             Routing.RegisterRoute("device", typeof(DevicePage));
         }

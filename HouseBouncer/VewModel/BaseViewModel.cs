@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SmartHomeApp.ViewModels
+namespace HouseBouncer.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
