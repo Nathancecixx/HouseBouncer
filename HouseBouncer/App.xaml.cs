@@ -1,4 +1,6 @@
-﻿namespace HouseBouncer
+﻿using Microsoft.Maui.Controls;
+
+namespace SmartHomeApp
 {
     public partial class App : Application
     {
@@ -6,6 +8,7 @@
         {
             InitializeComponent();
 
+            // Set the Shell as the main page
             MainPage = new AppShell();
         }
     }

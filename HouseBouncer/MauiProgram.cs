@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using SmartHomeApp;
 
-namespace HouseBouncer
+namespace SmartHomeApp
 {
     public static class MauiProgram
     {
@@ -16,7 +17,7 @@ namespace HouseBouncer
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

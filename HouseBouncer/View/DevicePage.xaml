@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SmartHomeApp.ViewModels"
+             x:Class="SmartHomeApp.Views.DevicePage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <vm:DeviceViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Text="{Binding Device.Name}" 
+                   FontSize="Large" 
+                   HorizontalOptions="Center" />
+            <Label Text="{Binding Device.Type}" 
+                   FontSize="Medium" 
+                   HorizontalOptions="Center" 
+                   TextColor="Gray"/>
+
+            <!-- Add controls to manage the device -->
+            <!-- Example: Toggle switch for a light -->
+            <Switch IsToggled="True" />
+            <Button Text="Perform Action" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
