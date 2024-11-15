@@ -1,16 +1,89 @@
 ﻿using HouseBouncer.Models;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace HouseBouncer.Services
 {
     public class DataService
     {
+        private const string DataFileName = "data.json";
         private ObservableCollection<Room> rooms;
+
+        public ObservableCollection<Room> Rooms
+        {
+            get => rooms;
+            private set => rooms = value;
+        }
 
         public DataService()
         {
-            // Initialize with some placeholder data
-            rooms = new ObservableCollection<Room>
+            Rooms = new ObservableCollection<Room>();
+            // Initialize data from storage asynchronously
+            LoadDataAsync();
+        }
+
+        public async Task LoadDataAsync()
+        {
+            var filePath = GetFilePath();
+            if (File.Exists(filePath))
+            {
+                string json = await File.ReadAllTextAsync(filePath);
+                var loadedRooms = JsonSerializer.Deserialize<ObservableCollection<Room>>(json);
+                if (loadedRooms != null)
+                {
+                    // Update the Rooms collection in-place
+                    Rooms.Clear();
+                    foreach (var room in loadedRooms)
+                    {
+                        Rooms.Add(room);
+                    }
+                }
+            }
+            else
+            {
+                // Initialize with placeholder data if no file exists
+                var defaultRooms = GetDefaultRooms();
+                Rooms.Clear();
+                foreach (var room in defaultRooms)
+                {
+                    Rooms.Add(room);
+                }
+                await SaveDataAsync();
+            }
+        }
+
+        public async Task SaveDataAsync()
+        {
+            try
+            {
+                if (Rooms.Count == 0)
+                {
+                    Console.WriteLine("No data to save.");
+                }
+
+                string json = JsonSerializer.Serialize(Rooms);
+                Console.WriteLine($"Saving JSON: {json}"); 
+                await File.WriteAllTextAsync(GetFilePath(), json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving data: {ex.Message}");
+            }
+        }
+
+
+        private string GetFilePath()
+        {
+            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            Console.WriteLine(folderPath);
+            return Path.Combine(folderPath, DataFileName);
+        }
+
+        private ObservableCollection<Room> GetDefaultRooms()
+        {
+            return new ObservableCollection<Room>
             {
                 new Room
                 {
@@ -35,16 +108,14 @@ namespace HouseBouncer.Services
             };
         }
 
-        public ObservableCollection<Room> GetRooms()
-        {
-            return rooms;
-        }
-
         public void AddRoom(Room newRoom)
         {
-            rooms.Add(newRoom);
+            Rooms.Add(newRoom);
         }
 
-        // Optionally, implement methods to save and load data from persistent storage
+        public void RemoveRoom(Room room)
+        {
+            Rooms.Remove(room);
+        }
     }
 }

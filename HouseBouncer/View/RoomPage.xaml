@@ -5,9 +5,13 @@
              x:Class="HouseBouncer.Views.RoomPage"
              Title="{Binding Title}">
 
-    <ContentPage.BindingContext>
-        <vm:RoomViewModel />
-    </ContentPage.BindingContext>
+    <!-- Add Toolbar Items -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+" 
+                     Command="{Binding AddDeviceCommand}" 
+                     Priority="0" 
+                     Order="Primary" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding Devices}"
@@ -15,12 +19,21 @@
                         SelectionChanged="OnSelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Name}" 
-                               FontSize="Medium" />
-                        <Label Text="{Binding Type}" 
-                               FontSize="Small" 
-                               TextColor="Gray"/>
+                    <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                            <Label Text="{Binding Name}" 
+                                   FontSize="Medium" />
+                            <Label Text="{Binding Type}" 
+                                   FontSize="Small" 
+                                   TextColor="Gray"/>
+                        </StackLayout>
+                        <Button Text="Delete"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RoomViewModel}}, Path=DeleteDeviceCommand}"
+                                CommandParameter="{Binding .}"
+                                HorizontalOptions="End"
+                                BackgroundColor="Red"
+                                TextColor="White" 
+                                HeightRequest="30"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

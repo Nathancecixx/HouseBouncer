@@ -52,7 +52,7 @@ namespace HouseBouncer.ViewModels
             {
                 IsBusy = true;
 
-                var rooms = _dataService.GetRooms();
+                var rooms = _dataService.Rooms;
                 foreach (var room in rooms)
                 {
                     var foundDevice = room.Devices.FirstOrDefault(d => d.Id == DeviceId);

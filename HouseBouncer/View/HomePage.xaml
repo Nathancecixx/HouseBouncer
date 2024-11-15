@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:HouseBouncer.ViewModels"
+             xmlns:viewModels="clr-namespace:HouseBouncer.ViewModels"
              x:Class="HouseBouncer.Views.HomePage"
              Title="{Binding Title}">
+
 
     <!-- Add Toolbar Items -->
     <ContentPage.ToolbarItems>
@@ -19,9 +20,22 @@
                         SelectionChanged="OnSelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Name}" 
-                               FontSize="Medium" />
+                    <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <!-- Room Details -->
+                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                            <Label Text="{Binding Name}" 
+                                   FontSize="Medium" 
+                                   VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+
+                        <!-- Delete Button -->
+                        <Button Text="Delete" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=DeleteRoomCommand}"
+                                CommandParameter="{Binding .}" 
+                                VerticalOptions="CenterAndExpand"
+                                BackgroundColor="Red"
+                                TextColor="White"
+                                HeightRequest="30"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

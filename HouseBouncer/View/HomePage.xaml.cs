@@ -1,20 +1,14 @@
-﻿using HouseBouncer.Models;
-using HouseBouncer.ViewModels;
+﻿using HouseBouncer.ViewModels;
 using Microsoft.Maui.Controls;
-using Microsoft.Extensions.DependencyInjection;
+using HouseBouncer.Models;
 
 namespace HouseBouncer.Views
 {
     public partial class HomePage : ContentPage
     {
-        HomeViewModel viewModel;
-
-        public HomePage()
+        public HomePage(HomeViewModel viewModel)
         {
             InitializeComponent();
-
-            // Resolve the HomeViewModel from DI
-            viewModel = (Application.Current as App).Services.GetService<HomeViewModel>();
 
             // Set the BindingContext
             BindingContext = viewModel;
@@ -26,9 +20,10 @@ namespace HouseBouncer.Views
             if (selectedRoom == null)
                 return;
 
-            viewModel.RoomSelectedCommand.Execute(selectedRoom);
+            var viewModel = BindingContext as HomeViewModel;
+            viewModel?.RoomSelectedCommand.Execute(selectedRoom);
 
-            // Deselect item
+            // Deselect the item to allow re-selection
             ((CollectionView)sender).SelectedItem = null;
         }
     }

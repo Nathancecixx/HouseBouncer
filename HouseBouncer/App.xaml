@@ -8,7 +8,6 @@
                 <Setter Property="FontSize" Value="24" />
                 <Setter Property="HorizontalOptions" Value="Center" />
             </Style>
-            <!-- Add more styles as needed -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

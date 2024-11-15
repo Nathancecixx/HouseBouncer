@@ -1,17 +1,15 @@
 ﻿using HouseBouncer.Models;
 using HouseBouncer.ViewModels;
-//using Xamarin.Forms;
 
 namespace HouseBouncer.Views
 {
     public partial class RoomPage : ContentPage
     {
-        RoomViewModel viewModel;
 
-        public RoomPage()
+        public RoomPage(RoomViewModel viewModel)
         {
             InitializeComponent();
-            viewModel = BindingContext as RoomViewModel;
+            BindingContext = viewModel;
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -20,7 +18,8 @@ namespace HouseBouncer.Views
             if (selectedDevice == null)
                 return;
 
-            viewModel.DeviceSelectedCommand.Execute(selectedDevice);
+            var viewModel = BindingContext as RoomViewModel;
+            viewModel?.DeviceSelectedCommand.Execute(selectedDevice);
 
             // Deselect item
             ((CollectionView)sender).SelectedItem = null;

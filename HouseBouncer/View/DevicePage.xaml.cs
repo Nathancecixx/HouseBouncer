@@ -10,7 +10,7 @@ namespace HouseBouncer.Views
         public DevicePage()
         {
             InitializeComponent();
-            viewModel = BindingContext as DeviceViewModel;
+            BindingContext = viewModel;
         }
     }
 }

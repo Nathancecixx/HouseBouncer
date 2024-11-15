@@ -6,11 +6,6 @@ namespace HouseBouncer.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public ObservableCollection<DeviceModel> Devices { get; set; }
-
-        public Room()
-        {
-            Devices = new ObservableCollection<DeviceModel>();
-        }
+        public ObservableCollection<DeviceModel> Devices { get; set; } = new ObservableCollection<DeviceModel>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HouseBouncer.Models;
 using HouseBouncer.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -15,40 +16,67 @@ namespace HouseBouncer.ViewModels
 
         public ICommand RoomSelectedCommand { get; }
         public ICommand AddRoomCommand { get; }
+        public ICommand DeleteRoomCommand { get; }
 
         public HomeViewModel(DataService dataService, IDialogService dialogService)
         {
             Title = "Home";
             _dataService = dataService;
             _dialogService = dialogService;
-            Rooms = _dataService.GetRooms();
+            Rooms = _dataService.Rooms;
+
             RoomSelectedCommand = new Command<Room>(OnRoomSelected);
             AddRoomCommand = new Command(OnAddRoom);
+            DeleteRoomCommand = new Command<Room>(OnDeleteRoom);
         }
 
         private async void OnAddRoom()
         {
-            string roomName = await _dialogService.ShowInputDialogAsync("New Room", "Enter the name of the new room:", "Room Name");
+            // Prompt the user for the new room name
+            string roomName = await _dialogService.ShowInputDialogAsync(
+                "New Room",
+                "Enter the name of the new room:",
+                "Room Name"
+            );
 
-            if (!string.IsNullOrWhiteSpace(roomName))
-            {
-                // Generate a unique ID for the new room
-                string newRoomId = Guid.NewGuid().ToString();
-
-                // Create a new Room object
-                Room newRoom = new Room
-                {
-                    Id = newRoomId,
-                    Name = roomName,
-                    Devices = new ObservableCollection<DeviceModel>() // Initialize with no devices
-                };
-
-                // Add the new room to the DataService
-                _dataService.AddRoom(newRoom);
-            }
-            else
+            if (string.IsNullOrWhiteSpace(roomName))
             {
                 await _dialogService.ShowAlertAsync("Invalid Name", "Room name cannot be empty.", "OK");
+                return;
+            }
+
+            // Generate a unique ID for the new room
+            string newRoomId = Guid.NewGuid().ToString();
+
+            Room newRoom = new Room
+            {
+                Id = newRoomId,
+                Name = roomName,
+                Devices = new ObservableCollection<DeviceModel>()
+            };
+
+            _dataService.AddRoom(newRoom);
+
+            await _dataService.SaveDataAsync();
+        }
+
+        private async void OnDeleteRoom(Room room)
+        {
+            if (room == null)
+                return;
+
+            // Ask the user to confirm the deletion
+            bool confirm = await _dialogService.ShowConfirmationDialogAsync(
+                "Delete Room",
+                $"Are you sure you want to delete '{room.Name}'?",
+                "Yes",
+                "No"
+            );
+
+            if (confirm)
+            {
+                _dataService.RemoveRoom(room);
+                await _dataService.SaveDataAsync();
             }
         }
 
