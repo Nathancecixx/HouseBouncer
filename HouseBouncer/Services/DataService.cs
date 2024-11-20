@@ -17,11 +17,18 @@ namespace HouseBouncer.Services
             private set => rooms = value;
         }
 
+        private readonly JsonSerializerOptions _jsonOptions;
+
         public DataService()
         {
             Rooms = new ObservableCollection<Room>();
+            _jsonOptions = new JsonSerializerOptions
+            {
+                // This ensures that the polymorphic attributes are respected
+                WriteIndented = true,
+            };
             // Initialize data from storage asynchronously
-            LoadDataAsync();
+            LoadDataAsync().ConfigureAwait(false);
         }
 
         public async Task LoadDataAsync()
@@ -30,7 +37,7 @@ namespace HouseBouncer.Services
             if (File.Exists(filePath))
             {
                 string json = await File.ReadAllTextAsync(filePath);
-                var loadedRooms = JsonSerializer.Deserialize<ObservableCollection<Room>>(json);
+                var loadedRooms = JsonSerializer.Deserialize<ObservableCollection<Room>>(json, _jsonOptions);
                 if (loadedRooms != null)
                 {
                     // Update the Rooms collection in-place
@@ -63,8 +70,8 @@ namespace HouseBouncer.Services
                     Console.WriteLine("No data to save.");
                 }
 
-                string json = JsonSerializer.Serialize(Rooms);
-                Console.WriteLine($"Saving JSON: {json}"); 
+                string json = JsonSerializer.Serialize(Rooms, _jsonOptions);
+                Console.WriteLine($"Saving JSON: {json}");
                 await File.WriteAllTextAsync(GetFilePath(), json);
             }
             catch (Exception ex)
@@ -91,8 +98,6 @@ namespace HouseBouncer.Services
                     Name = "Living Room",
                     Devices = new ObservableCollection<DeviceModel>
                     {
-                        new DeviceModel { Id = 1, Name = "Thermostat", Type = "Climate", roomId = 1, powerStatus = true, isConnected = true },
-                        new DeviceModel { Id = 2, Name = "Smart Light", Type = "Lighting", roomId = 1, powerStatus = false, isConnected = true }
                     }
                 },
                 new Room
@@ -101,8 +106,6 @@ namespace HouseBouncer.Services
                     Name = "Bedroom",
                     Devices = new ObservableCollection<DeviceModel>
                     {
-                        new DeviceModel { Id = 3, Name = "Smart Speaker", Type = "Entertainment", roomId = 2, powerStatus = true, isConnected = false },
-                        new DeviceModel { Id = 4, Name = "Air Purifier", Type = "Air Quality", roomId = 2, powerStatus = false, isConnected = true }
                     }
                 }
             };

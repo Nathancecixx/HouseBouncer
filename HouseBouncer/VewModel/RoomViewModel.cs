@@ -63,6 +63,15 @@ namespace HouseBouncer.ViewModels
 
         private async void OnAddDevice()
         {
+            // Prompt the user for the device type
+            string deviceType = await _dialogService.ShowOptionsDialogAsync(
+                "Select Device Type",
+                "Choose the type of device:",
+                new[] { "Garage Door", "Camera", "Other" });
+
+            if (string.IsNullOrWhiteSpace(deviceType))
+                return;
+
             // Prompt the user for the new device name
             string deviceName = await _dialogService.ShowInputDialogAsync(
                 "Add New Device",
@@ -72,16 +81,52 @@ namespace HouseBouncer.ViewModels
             if (string.IsNullOrWhiteSpace(deviceName))
                 return;
 
-            var newDevice = new DeviceModel
+            DeviceModel newDevice;
+            int nextId = _dataService.Rooms.SelectMany(r => r.Devices).Any() 
+                ? _dataService.Rooms.SelectMany(r => r.Devices).Max(d => d.Id) + 1 
+                : 1;
+
+            switch (deviceType)
             {
-                Id = _dataService.Rooms.SelectMany(r => r.Devices).Max(d => d.Id) + 1,
-                Name = deviceName
-            };
+                case "Garage Door":
+                    newDevice = new GarageDoor
+                    {
+                        Id = nextId,
+                        Name = deviceName,
+                        Type = deviceType,
+                        status = "Unknown",
+                        isLocked = false,
+                        lastOpened = DateTime.MinValue
+                    };
+                    break;
+
+                case "Camera":
+                    newDevice = new Camera
+                    {
+                        Id = nextId,
+                        Name = deviceName,
+                        Type = deviceType,
+                        isRecording = false,
+                        resolution = "1080p",
+                        angle = 0,
+                        storagePath = "../Recordings"
+                    };
+                    break;
+
+                default:
+                    newDevice = new DeviceModel
+                    {
+                        Id = _dataService.Rooms.SelectMany(r => r.Devices).Max(d => d.Id) + 1,
+                        Name = deviceName,
+                    };
+                    break;
+            }
 
             // Find the room to which the device will be added
             var room = _dataService.Rooms.FirstOrDefault(r => r.Id == RoomId);
             if (room != null)
             {
+                newDevice.roomId = room.Id;
                 room.Devices.Add(newDevice);
                 // For UI
                 Devices.Add(newDevice);
