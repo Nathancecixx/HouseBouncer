@@ -67,6 +67,7 @@ namespace HouseBouncer.Models
         }
     }
 
+
     public class Fridge : DeviceModel
     {
         public float Temperature { get; set; }
