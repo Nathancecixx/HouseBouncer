@@ -48,6 +48,41 @@ namespace HouseBouncer.Models
             lastOpened = DateTime.MinValue;
         }
 
-    
+
     }
+
+     
+        public class Fan : DeviceModel
+    {
+        public int Speed { get; set; }
+        public string Mode { get; set; }
+        public bool IsOscillating { get; set; }
+
+        public Fan()
+        {
+            Type = "Fan";
+            Speed = 0;
+            Mode = "Normal";
+            IsOscillating = false;
+        }
+    }
+
+    public class Fridge : DeviceModel
+    {
+        public float Temperature { get; set; }
+        public bool IsDoorOpen { get; set; }
+        public string CoolingMode { get; set; }
+
+        public Fridge()
+        {
+            Type = "Fridge";
+            Temperature = 4.0f;
+            IsDoorOpen = false;
+            CoolingMode = "Eco";
+        }
+    }
+
 }
+
+
+
