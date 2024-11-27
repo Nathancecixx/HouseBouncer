@@ -67,7 +67,7 @@ namespace HouseBouncer.ViewModels
             string deviceType = await _dialogService.ShowOptionsDialogAsync(
                 "Select Device Type",
                 "Choose the type of device:",
-                new[] { "Garage Door", "Camera", "Other" });
+                new[] { "Garage Door", "Camera", "Fan", "Fridge", "Other" });
 
             if (string.IsNullOrWhiteSpace(deviceType))
                 return;
@@ -94,9 +94,9 @@ namespace HouseBouncer.ViewModels
                         Id = nextId,
                         Name = deviceName,
                         Type = deviceType,
-                        status = "Unknown",
-                        isLocked = false,
-                        lastOpened = DateTime.MinValue
+                        Status = "Unknown",
+                        IsLocked = false,
+                        LastOpened = DateTime.MinValue
                     };
                     break;
 
@@ -106,10 +106,34 @@ namespace HouseBouncer.ViewModels
                         Id = nextId,
                         Name = deviceName,
                         Type = deviceType,
-                        isRecording = false,
-                        resolution = "1080p",
-                        angle = 0,
-                        storagePath = "../Recordings"
+                        IsRecording = false,
+                        Resolution = "1080p",
+                        Angle = 0,
+                        StoragePath = "../Recordings"
+                    };
+                    break;
+
+                case "Fan":
+                    newDevice = new Fan
+                    {
+                        Id = nextId,
+                        Name = deviceName,
+                        Type = deviceType,
+                        Speed = 0,
+                        Mode = "Normal",
+                        IsOscillating = false
+                    };
+                    break;
+
+                case "Fridge":
+                    newDevice = new Fridge
+                    {
+                        Id = nextId,
+                        Name = deviceName,
+                        Type = deviceType,
+                        Temperature = 4.0f,
+                        IsDoorOpen = false,
+                        CoolingMode = "Eco"
                     };
                     break;
 
@@ -126,7 +150,7 @@ namespace HouseBouncer.ViewModels
             var room = _dataService.Rooms.FirstOrDefault(r => r.Id == RoomId);
             if (room != null)
             {
-                newDevice.roomId = room.Id;
+                newDevice.RoomId = room.Id;
                 room.Devices.Add(newDevice);
                 // For UI
                 Devices.Add(newDevice);

@@ -24,6 +24,8 @@ namespace HouseBouncer.ViewModels
         }
 
         public ObservableCollection<string> Resolutions { get; }
+        public ObservableCollection<string> FanModes { get; }
+        public ObservableCollection<string> CoolingModes { get; }
 
         private DeviceModel device;
         public DeviceModel Device
@@ -35,13 +37,11 @@ namespace HouseBouncer.ViewModels
         public ICommand TogglePowerCommand { get; }
         public ICommand ToggleConnectionCommand { get; }
 
-        // Constructor with DI
         public DeviceViewModel(DataService dataService)
         {
             Title = "Device";
             _dataService = dataService;
 
-            // Initialize commands
             TogglePowerCommand = new Command(OnTogglePower);
             ToggleConnectionCommand = new Command(OnToggleConnection);
 
@@ -50,6 +50,20 @@ namespace HouseBouncer.ViewModels
                 "1080p",
                 "720p",
                 "480p"
+            };
+
+            FanModes = new ObservableCollection<string>
+            {
+                "Normal",
+                "Sleep",
+                "Turbo"
+            };
+
+            CoolingModes = new ObservableCollection<string>
+            {
+                "Eco",
+                "Normal",
+                "Freeze"
             };
         }
 
@@ -76,14 +90,8 @@ namespace HouseBouncer.ViewModels
 
                 if (Device == null)
                 {
-                    // Handle device not found
                     Title = "Device Not Found";
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (optional)
-                Title = "Error";
             }
             finally
             {
@@ -95,9 +103,7 @@ namespace HouseBouncer.ViewModels
         {
             if (Device != null)
             {
-                Device.powerStatus = !Device.powerStatus;
-                // Optionally, save the state or perform additional actions
-                OnPropertyChanged(nameof(Device));
+                Device.PowerStatus = !Device.PowerStatus;
             }
         }
 
@@ -105,9 +111,7 @@ namespace HouseBouncer.ViewModels
         {
             if (Device != null)
             {
-                Device.isConnected = !Device.isConnected;
-                // Optionally, save the state or perform additional actions
-                OnPropertyChanged(nameof(Device));
+                Device.IsConnected = !Device.IsConnected;
             }
         }
     }

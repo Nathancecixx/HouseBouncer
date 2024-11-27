@@ -25,13 +25,19 @@
                     <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Camera">
                         <Setter Property="IsVisible" Value="False" />
                     </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fan">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fridge">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="Garage Door Controls" 
                        FontSize="Medium" 
                        HorizontalOptions="Center" />
                 <Label Text="Status:" FontSize="Small" />
-                <Label Text="{Binding Device.status}" FontSize="Small" />
-                <Switch IsToggled="{Binding Device.isLocked}" />
+                <Label Text="{Binding Device.Status}" FontSize="Small" />
+                <Switch IsToggled="{Binding Device.IsLocked}" />
                 <Button Text="Toggle Door" Command="{Binding TogglePowerCommand}" />
             </StackLayout>
 
@@ -44,6 +50,12 @@
                     <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Garage Door">
                         <Setter Property="IsVisible" Value="False" />
                     </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fan">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fridge">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="Camera Controls" 
                        FontSize="Medium" 
@@ -52,14 +64,84 @@
                 <!-- Resolution Picker -->
                 <Label Text="Resolution:" FontSize="Small" />
                 <Picker ItemsSource="{Binding Resolutions}"
-                        SelectedItem="{Binding Device.resolution, Mode=TwoWay}"
+                        SelectedItem="{Binding Device.Resolution, Mode=TwoWay}"
                         Title="Select Resolution" />
 
-                <Switch IsToggled="{Binding Device.isRecording}" />
+                <Switch IsToggled="{Binding Device.IsRecording}" />
                 <Label Text="Angle:" FontSize="Small" />
-                <Slider Maximum="360" Value="{Binding Device.angle}" />
+                <Slider Maximum="360" Value="{Binding Device.Angle}" />
                 <Button Text="Start Recording" Command="{Binding ToggleConnectionCommand}" />
             </StackLayout>
+
+            <!-- Fan Controls -->
+            <StackLayout IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fan">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Garage Door">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Camera">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fridge">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Fan Controls" 
+                       FontSize="Medium" 
+                       HorizontalOptions="Center" />
+
+                <Label Text="Speed:" FontSize="Small" />
+                <Slider Minimum="0" Maximum="3" Value="{Binding Device.Speed, Mode=TwoWay}" />
+
+                <Label Text="Mode:" FontSize="Small" />
+                <Picker ItemsSource="{Binding FanModes}"
+                        SelectedItem="{Binding Device.Mode, Mode=TwoWay}"
+                        Title="Select Mode" />
+
+                <Label Text="Oscillating:" FontSize="Small" />
+                <Switch IsToggled="{Binding Device.IsOscillating, Mode=TwoWay}" />
+
+                <Button Text="Toggle Power" Command="{Binding TogglePowerCommand}" />
+            </StackLayout>
+
+            <!-- Fridge Controls -->
+            <StackLayout IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fridge">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Camera">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Garage Door">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Fan">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Fridge Controls" 
+                       FontSize="Medium" 
+                       HorizontalOptions="Center" />
+
+                <Label Text="Temperature (°C):" FontSize="Small" />
+                <Slider Minimum="-5" Maximum="10" Value="{Binding Device.Temperature, Mode=TwoWay}" />
+
+                <Label Text="Door Open:" FontSize="Small" />
+                <Switch IsToggled="{Binding Device.IsDoorOpen, Mode=TwoWay}" />
+
+                <Label Text="Cooling Mode:" FontSize="Small" />
+                <Picker ItemsSource="{Binding CoolingModes}"
+                        SelectedItem="{Binding Device.CoolingMode, Mode=TwoWay}"
+                        Title="Select Cooling Mode" />
+
+                <Button Text="Toggle Power" Command="{Binding TogglePowerCommand}" />
+            </StackLayout>
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

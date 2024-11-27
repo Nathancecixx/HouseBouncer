@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace HouseBouncer.Models
@@ -6,57 +7,268 @@ namespace HouseBouncer.Models
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "Json-Type")]
     [JsonDerivedType(typeof(GarageDoor), "Garage Door")]
     [JsonDerivedType(typeof(Camera), "Camera")]
-    public class DeviceModel
+    [JsonDerivedType(typeof(Fan), "Fan")]
+    [JsonDerivedType(typeof(Fridge), "Fridge")]
+    public class DeviceModel : INotifyPropertyChanged
     {
-        public string Name { get; set; }
-        public int Id { get; set; }
-        public string Type { get; set; }
-        public string roomId { get; set; }
-        public bool powerStatus { get; set; }
-        public bool isConnected { get; set; }
-    }
+        // Implement INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
 
-
-    public class Camera : DeviceModel
-    {
-        public bool isRecording { get; set; }
-        public string resolution { get; set; }
-        public float angle { get; set; }
-        public string storagePath { get; set; }
-        public Camera()
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Type = "Camera";
-            isRecording = false;
-            resolution = "1080p";
-            angle = 0;
-            storagePath = "../Recordings";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        private string name;
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (name != value)
+                {
+                    name = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int id;
+        public int Id
+        {
+            get => id;
+            set
+            {
+                if (id != value)
+                {
+                    id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string type;
+        public string Type
+        {
+            get => type;
+            set
+            {
+                if (type != value)
+                {
+                    type = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string roomId;
+        public string RoomId
+        {
+            get => roomId;
+            set
+            {
+                if (roomId != value)
+                {
+                    roomId = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool powerStatus;
+        public bool PowerStatus
+        {
+            get => powerStatus;
+            set
+            {
+                if (powerStatus != value)
+                {
+                    powerStatus = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isConnected;
+        public bool IsConnected
+        {
+            get => isConnected;
+            set
+            {
+                if (isConnected != value)
+                {
+                    isConnected = value;
+                    OnPropertyChanged();
+                }
+            }
         }
     }
 
-
-    public class GarageDoor : DeviceModel 
+    public class Camera : DeviceModel
     {
-        public string status { get; set; }
-        public bool isLocked { get; set; }
-        public DateTime lastOpened { get; set; }
+        private bool isRecording;
+        public bool IsRecording
+        {
+            get => isRecording;
+            set
+            {
+                if (isRecording != value)
+                {
+                    isRecording = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string resolution;
+        public string Resolution
+        {
+            get => resolution;
+            set
+            {
+                if (resolution != value)
+                {
+                    resolution = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private float angle;
+        public float Angle
+        {
+            get => angle;
+            set
+            {
+                if (angle != value)
+                {
+                    angle = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string storagePath;
+        public string StoragePath
+        {
+            get => storagePath;
+            set
+            {
+                if (storagePath != value)
+                {
+                    storagePath = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Camera()
+        {
+            Type = "Camera";
+            IsRecording = false;
+            Resolution = "1080p";
+            Angle = 0;
+            StoragePath = "../Recordings";
+        }
+    }
+
+    public class GarageDoor : DeviceModel
+    {
+        private string status;
+        public string Status
+        {
+            get => status;
+            set
+            {
+                if (status != value)
+                {
+                    status = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isLocked;
+        public bool IsLocked
+        {
+            get => isLocked;
+            set
+            {
+                if (isLocked != value)
+                {
+                    isLocked = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private DateTime lastOpened;
+        public DateTime LastOpened
+        {
+            get => lastOpened;
+            set
+            {
+                if (lastOpened != value)
+                {
+                    lastOpened = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public GarageDoor()
         {
             Type = "Garage Door";
-            status = "Unknown";
-            isLocked = false;
-            lastOpened = DateTime.MinValue;
+            Status = "Unknown";
+            IsLocked = false;
+            LastOpened = DateTime.MinValue;
         }
-
-
     }
 
-     
-        public class Fan : DeviceModel
+    public class Fan : DeviceModel
     {
-        public int Speed { get; set; }
-        public string Mode { get; set; }
-        public bool IsOscillating { get; set; }
+        private int speed;
+        public int Speed
+        {
+            get => speed;
+            set
+            {
+                if (speed != value)
+                {
+                    speed = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string mode;
+        public string Mode
+        {
+            get => mode;
+            set
+            {
+                if (mode != value)
+                {
+                    mode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isOscillating;
+        public bool IsOscillating
+        {
+            get => isOscillating;
+            set
+            {
+                if (isOscillating != value)
+                {
+                    isOscillating = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public Fan()
         {
@@ -67,12 +279,49 @@ namespace HouseBouncer.Models
         }
     }
 
-
     public class Fridge : DeviceModel
     {
-        public float Temperature { get; set; }
-        public bool IsDoorOpen { get; set; }
-        public string CoolingMode { get; set; }
+        private float temperature;
+        public float Temperature
+        {
+            get => temperature;
+            set
+            {
+                if (temperature != value)
+                {
+                    temperature = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isDoorOpen;
+        public bool IsDoorOpen
+        {
+            get => isDoorOpen;
+            set
+            {
+                if (isDoorOpen != value)
+                {
+                    isDoorOpen = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string coolingMode;
+        public string CoolingMode
+        {
+            get => coolingMode;
+            set
+            {
+                if (coolingMode != value)
+                {
+                    coolingMode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public Fridge()
         {
@@ -82,8 +331,4 @@ namespace HouseBouncer.Models
             CoolingMode = "Eco";
         }
     }
-
 }
-
-
-
