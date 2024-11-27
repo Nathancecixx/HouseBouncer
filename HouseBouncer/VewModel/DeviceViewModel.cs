@@ -3,6 +3,7 @@ using HouseBouncer.Services;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using System.Collections.ObjectModel;
 
 namespace HouseBouncer.ViewModels
 {
@@ -21,6 +22,8 @@ namespace HouseBouncer.ViewModels
                 LoadDevice();
             }
         }
+
+        public ObservableCollection<string> Resolutions { get; }
 
         private DeviceModel device;
         public DeviceModel Device
@@ -41,6 +44,13 @@ namespace HouseBouncer.ViewModels
             // Initialize commands
             TogglePowerCommand = new Command(OnTogglePower);
             ToggleConnectionCommand = new Command(OnToggleConnection);
+
+            Resolutions = new ObservableCollection<string>
+            {
+                "1080p",
+                "720p",
+                "480p"
+            };
         }
 
         private void LoadDevice()

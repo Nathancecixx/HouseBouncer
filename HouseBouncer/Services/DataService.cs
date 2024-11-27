@@ -111,6 +111,39 @@ namespace HouseBouncer.Services
             };
         }
 
+        public void UpdateDevice(DeviceModel updatedDevice)
+        {
+            // Find the room containing the device
+            var room = Rooms.FirstOrDefault(r => r.Id == updatedDevice.roomId);
+            if (room != null)
+            {
+                // Find the device in the room and update it
+                var device = room.Devices.FirstOrDefault(d => d.Id == updatedDevice.Id);
+                if (device != null)
+                {
+                    // Update the device properties
+                    device.Name = updatedDevice.Name;
+                    device.Type = updatedDevice.Type;
+                    device.powerStatus = updatedDevice.powerStatus;
+                    device.isConnected = updatedDevice.isConnected;
+
+                    if (device is Camera camera && updatedDevice is Camera updatedCamera)
+                    {
+                        camera.isRecording = updatedCamera.isRecording;
+                        camera.resolution = updatedCamera.resolution;
+                        camera.angle = updatedCamera.angle;
+                    }
+                    else if (device is GarageDoor garageDoor && updatedDevice is GarageDoor updatedGarageDoor)
+                    {
+                        garageDoor.status = updatedGarageDoor.status;
+                        garageDoor.isLocked = updatedGarageDoor.isLocked;
+                        garageDoor.lastOpened = updatedGarageDoor.lastOpened;
+                    }
+                }
+            }
+        }
+
+
         public void AddRoom(Room newRoom)
         {
             Rooms.Add(newRoom);

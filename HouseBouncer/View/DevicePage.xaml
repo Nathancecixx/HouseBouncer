@@ -7,6 +7,7 @@
 
     <ContentPage.Content>
         <StackLayout Padding="20">
+            <!-- Common Fields -->
             <Label Text="{Binding Device.Name}" 
                    FontSize="Large" 
                    HorizontalOptions="Center" />
@@ -15,10 +16,50 @@
                    HorizontalOptions="Center" 
                    TextColor="Gray"/>
 
-            <!-- Add controls to manage the device -->
-            <!-- Example: Toggle switch for a light -->
-            <Switch IsToggled="True" />
-            <Button Text="Perform Action" />
+            <!-- Garage Door Controls -->
+            <StackLayout>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Garage Door">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Camera">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Garage Door Controls" 
+                       FontSize="Medium" 
+                       HorizontalOptions="Center" />
+                <Label Text="Status:" FontSize="Small" />
+                <Label Text="{Binding Device.status}" FontSize="Small" />
+                <Switch IsToggled="{Binding Device.isLocked}" />
+                <Button Text="Toggle Door" Command="{Binding TogglePowerCommand}" />
+            </StackLayout>
+
+            <!-- Camera Controls -->
+            <StackLayout>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Camera">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Device.Type}" Value="Garage Door">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Camera Controls" 
+                       FontSize="Medium" 
+                       HorizontalOptions="Center" />
+
+                <!-- Resolution Picker -->
+                <Label Text="Resolution:" FontSize="Small" />
+                <Picker ItemsSource="{Binding Resolutions}"
+                        SelectedItem="{Binding Device.resolution, Mode=TwoWay}"
+                        Title="Select Resolution" />
+
+                <Switch IsToggled="{Binding Device.isRecording}" />
+                <Label Text="Angle:" FontSize="Small" />
+                <Slider Maximum="360" Value="{Binding Device.angle}" />
+                <Button Text="Start Recording" Command="{Binding ToggleConnectionCommand}" />
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
