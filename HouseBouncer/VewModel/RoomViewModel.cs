@@ -67,9 +67,9 @@ namespace HouseBouncer.ViewModels
             string deviceType = await _dialogService.ShowOptionsDialogAsync(
                 "Select Device Type",
                 "Choose the type of device:",
-                new[] { "Garage Door", "Camera", "Fan", "Fridge", "Other" });
+                new[] { "Garage Door", "Camera", "Fan", "Fridge"});
 
-            if (string.IsNullOrWhiteSpace(deviceType))
+            if (deviceType == "Cancel")
                 return;
 
             // Prompt the user for the new device name
@@ -154,7 +154,7 @@ namespace HouseBouncer.ViewModels
                 room.Devices.Add(newDevice);
                 // For UI
                 Devices.Add(newDevice);
-                await _dataService.SaveDataAsync();
+                await _dataService.SaveDeviceAsync(room.Id, newDevice);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace HouseBouncer.ViewModels
                 {
                     room.Devices.Remove(device);
                     Devices.Remove(device);
-                    await _dataService.SaveDataAsync();
+                    await _dataService.SaveDeviceAsync(room.Id, device);
                 }
                 else
                 {

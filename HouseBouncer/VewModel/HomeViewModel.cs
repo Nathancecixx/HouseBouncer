@@ -55,9 +55,7 @@ namespace HouseBouncer.ViewModels
                 Devices = new ObservableCollection<DeviceModel>()
             };
 
-            _dataService.AddRoom(newRoom);
-
-            await _dataService.SaveDataAsync();
+            await _dataService.AddRoomAsync(newRoom);
         }
 
         private async void OnDeleteRoom(Room room)
@@ -76,7 +74,6 @@ namespace HouseBouncer.ViewModels
             if (confirm)
             {
                 _dataService.RemoveRoom(room);
-                await _dataService.SaveDataAsync();
             }
         }
 

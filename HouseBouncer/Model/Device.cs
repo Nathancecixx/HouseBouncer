@@ -12,7 +12,7 @@ namespace HouseBouncer.Models
     public class DeviceModel : INotifyPropertyChanged
     {
         // Implement INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
