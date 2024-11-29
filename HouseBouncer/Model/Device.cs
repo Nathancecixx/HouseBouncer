@@ -331,4 +331,45 @@ namespace HouseBouncer.Models
             CoolingMode = "Eco";
         }
     }
+
+    public class SmartLock : DeviceModel
+    {
+        public bool IsLocked { get; set; }
+        public string PinCode { get; set; }
+        public bool ToggleLock { get; set; }
+        public DateTime LastAccessed { get; set; }
+
+        public SmartLock()
+        {
+            Type = "Smart Lock";
+            IsLocked = true;
+            PinCode = "3765";
+            ToggleLock = true;
+            LastAccessed = DateTime.MinValue;
+        }
+
+        // Method to lock the smart lock
+        public void Lock()
+        {
+            IsLocked = true;
+            LastAccessed = DateTime.Now;
+        }
+
+        // Method to unlock the smart lock using a pin code
+        public bool ToggleUnlock(string inputPin)
+        {
+            if (PinCode == inputPin)
+            {
+                IsLocked = !IsLocked;
+                LastAccessed = DateTime.Now;
+                return true;
+            }
+            else
+            {
+                return false; // Incorrect pin
+            }
+        }
+    }
+
+
 }
