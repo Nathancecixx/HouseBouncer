@@ -16,7 +16,7 @@ namespace SmartLockTesting.Dependencies
         [JsonDerivedType(typeof(Fridge), "Fridge")]
         public class DeviceModel : INotifyPropertyChanged
         {
-            // Implement INotifyPropertyChanged
+
             public event PropertyChangedEventHandler PropertyChanged;
 
             protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -108,272 +108,308 @@ namespace SmartLockTesting.Dependencies
                     }
                 }
             }
+
+            public DeviceModel(string name, int id, string type, string roomId, bool powerStatus = true, bool isConnected = true)
+            {
+                Name = name;
+                Id = id;
+                Type = type;
+                RoomId = roomId;
+                PowerStatus = powerStatus;
+                IsConnected = isConnected;
+            }
         }
 
-        public class Camera : DeviceModel
+    public class Camera : DeviceModel
+    {
+        private bool isRecording;
+        public bool IsRecording
         {
-            private bool isRecording;
-            public bool IsRecording
+            get => isRecording;
+            set
             {
-                get => isRecording;
-                set
+                if (isRecording != value)
                 {
-                    if (isRecording != value)
-                    {
-                        isRecording = value;
-                        OnPropertyChanged();
-                    }
+                    isRecording = value;
+                    OnPropertyChanged();
                 }
             }
+        }
 
-            private string resolution;
-            public string Resolution
+        private string resolution;
+        public string Resolution
+        {
+            get => resolution;
+            set
             {
-                get => resolution;
-                set
+                if (resolution != value)
                 {
-                    if (resolution != value)
-                    {
-                        resolution = value;
-                        OnPropertyChanged();
-                    }
+                    resolution = value;
+                    OnPropertyChanged();
                 }
             }
+        }
 
-            private float angle;
-            public float Angle
+        private float angle;
+        public float Angle
+        {
+            get => angle;
+            set
             {
-                get => angle;
-                set
+                if (angle != value)
                 {
-                    if (angle != value)
-                    {
-                        angle = value;
-                        OnPropertyChanged();
-                    }
+                    angle = value;
+                    OnPropertyChanged();
                 }
             }
+        }
 
-            private string storagePath;
-            public string StoragePath
+        private string storagePath;
+        public string StoragePath
+        {
+            get => storagePath;
+            set
             {
-                get => storagePath;
-                set
+                if (storagePath != value)
                 {
-                    if (storagePath != value)
-                    {
-                        storagePath = value;
-                        OnPropertyChanged();
-                    }
+                    storagePath = value;
+                    OnPropertyChanged();
                 }
             }
+        }
 
-            public Camera()
+        public Camera(string name, int id, string roomId, bool powerStatus = true)
+            : base(name, id, "Camera", roomId, powerStatus)
+        {
+            IsRecording = false;
+            Resolution = "1080p";
+            Angle = 0.0f;
+            StoragePath = "../Recordings";
+        }
+
+        public void StartRecording()
+        {
+            if (IsStorageAvailable())
             {
-                Type = "Camera";
+                IsRecording = true;
+                // Implement recording of video stream coming from real camera
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient storage space.");
+            }
+        }
+
+        public void StopRecording()
+        {
+            if (IsRecording)
+            {
                 IsRecording = false;
-                Resolution = "1080p";
-                Angle = 0;
-                StoragePath = "../Recordings";
+                // stop reading from device stream and save it locally
             }
         }
 
-        public class GarageDoor : DeviceModel
+        public void AdjustAngle(float newAngle)
         {
-            private string status;
-            public string Status
-            {
-                get => status;
-                set
-                {
-                    if (status != value)
-                    {
-                        status = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
+            Angle = newAngle;
+            // Implement physical device adjustment
+        }
 
-            private bool isLocked;
-            public bool IsLocked
-            {
-                get => isLocked;
-                set
-                {
-                    if (isLocked != value)
-                    {
-                        isLocked = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
+        // Helper method to check for available storage
+        private bool IsStorageAvailable()
+        {
+            // Perform storage check on device to assure minimum space for videos
+            return true;
+        }
+    }
 
-            private DateTime lastOpened;
-            public DateTime LastOpened
+    public class GarageDoor : DeviceModel
+    {
+        private string status;
+        public string Status
+        {
+            get => status;
+            set
             {
-                get => lastOpened;
-                set
+                if (status != value)
                 {
-                    if (lastOpened != value)
-                    {
-                        lastOpened = value;
-                        OnPropertyChanged();
-                    }
+                    status = value;
+                    OnPropertyChanged();
                 }
-            }
-
-            public GarageDoor()
-            {
-                Type = "Garage Door";
-                Status = "Unknown";
-                IsLocked = false;
-                LastOpened = DateTime.MinValue;
             }
         }
 
-        public class Fan : DeviceModel
+        private bool isLocked;
+        public bool IsLocked
         {
-            private int speed;
-            public int Speed
+            get => isLocked;
+            set
             {
-                get => speed;
-                set
+                if (isLocked != value)
                 {
-                    if (speed != value)
-                    {
-                        speed = value;
-                        OnPropertyChanged();
-                    }
+                    isLocked = value;
+                    OnPropertyChanged();
                 }
-            }
-
-            private string mode;
-            public string Mode
-            {
-                get => mode;
-                set
-                {
-                    if (mode != value)
-                    {
-                        mode = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
-
-            private bool isOscillating;
-            public bool IsOscillating
-            {
-                get => isOscillating;
-                set
-                {
-                    if (isOscillating != value)
-                    {
-                        isOscillating = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
-
-            public Fan()
-            {
-                Type = "Fan";
-                Speed = 0;
-                Mode = "Normal";
-                IsOscillating = false;
             }
         }
 
-        public class Fridge : DeviceModel
+        private DateTime lastOpened;
+        public DateTime LastOpened
         {
-            private float temperature;
-            public float Temperature
+            get => lastOpened;
+            set
             {
-                get => temperature;
-                set
+                if (lastOpened != value)
                 {
-                    if (temperature != value)
-                    {
-                        temperature = value;
-                        OnPropertyChanged();
-                    }
+                    lastOpened = value;
+                    OnPropertyChanged();
                 }
-            }
-
-            private bool isDoorOpen;
-            public bool IsDoorOpen
-            {
-                get => isDoorOpen;
-                set
-                {
-                    if (isDoorOpen != value)
-                    {
-                        isDoorOpen = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
-
-            private string coolingMode;
-            public string CoolingMode
-            {
-                get => coolingMode;
-                set
-                {
-                    if (coolingMode != value)
-                    {
-                        coolingMode = value;
-                        OnPropertyChanged();
-                    }
-                }
-            }
-
-            public Fridge()
-            {
-                Type = "Fridge";
-                Temperature = 4.0f;
-                IsDoorOpen = false;
-                CoolingMode = "Eco";
             }
         }
 
-        public class SmartLock : DeviceModel
+        public GarageDoor(string name, int id, string roomId, bool powerStatus = true)
+            : base(name, id, "Garage Door", roomId, powerStatus)
         {
-            public bool IsLocked { get; set; }
-            public string PinCode { get; set; }
-            public bool ToggleLock { get; set; }
-            public DateTime LastAccessed { get; set; }
+            Status = "Closed";
+            IsLocked = false;
+            LastOpened = DateTime.MinValue;
+        }
 
-            public SmartLock()
+        public void OpenDoor()
+        {
+            if (!IsLocked)
             {
-                Type = "Smart Lock";
-                IsLocked = true;
-                PinCode = "3765";
-                ToggleLock = true;
-                LastAccessed = DateTime.MinValue;
+                Status = "Open";
+                LastOpened = DateTime.Now;
+                //Send call to open door
             }
-
-            // Method to lock the smart lock
-            public void Lock()
+            else
             {
-                IsLocked = true;
+                throw new InvalidOperationException("Cannot open the door; it is locked.");
+            }
+        }
+
+        public void CloseDoor()
+        {
+            Status = "Closed";
+            //Send call to close door
+        }
+
+        public void LockDoor()
+        {
+            IsLocked = true;
+            //Send call to lock door
+        }
+
+        // Method to unlock the garage door
+        public void UnlockDoor()
+        {
+            IsLocked = false;
+            //Send call to unlock door
+        }
+    }
+
+    public class Fan : DeviceModel
+    {
+        private int speed;
+        public int Speed
+        {
+            get => speed;
+            set { if (speed != value) { speed = value; OnPropertyChanged(); } }
+        }
+
+        private string mode;
+        public string Mode
+        {
+            get => mode;
+            set { if (mode != value) { mode = value; OnPropertyChanged(); } }
+        }
+
+        private bool isOscillating;
+        public bool IsOscillating
+        {
+            get => isOscillating;
+            set { if (isOscillating != value) { isOscillating = value; OnPropertyChanged(); } }
+        }
+
+        public Fan(string name, int id, string roomId, bool powerStatus = true)
+            : base(name, id, "Fan", roomId, powerStatus)
+        {
+            Speed = 0;
+            Mode = "Normal";
+            IsOscillating = false;
+        }
+    }
+
+    public class Fridge : DeviceModel
+    {
+        private float temperature;
+        public float Temperature
+        {
+            get => temperature;
+            set { if (temperature != value) { temperature = value; OnPropertyChanged(); } }
+        }
+
+        private bool isDoorOpen;
+        public bool IsDoorOpen
+        {
+            get => isDoorOpen;
+            set { if (isDoorOpen != value) { isDoorOpen = value; OnPropertyChanged(); } }
+        }
+
+        private string coolingMode;
+        public string CoolingMode
+        {
+            get => coolingMode;
+            set { if (coolingMode != value) { coolingMode = value; OnPropertyChanged(); } }
+        }
+
+        public Fridge(string name, int id, string roomId, bool powerStatus = true)
+            : base(name, id, "Fridge", roomId, powerStatus)
+        {
+            Temperature = 4.0f;
+            IsDoorOpen = false;
+            CoolingMode = "Eco";
+        }
+    }
+
+    public class SmartLock : DeviceModel
+    {
+        public bool IsLocked { get; set; }
+        public string PinCode { get; set; }
+        public bool ToggleLock { get; set; }
+        public DateTime LastAccessed { get; set; }
+
+        public SmartLock(string name, int id, string roomId, bool powerStatus = true)
+            : base(name, id, "Smart Lock", roomId, powerStatus)
+        {
+            IsLocked = true;
+            PinCode = "3765";
+            ToggleLock = true;
+            LastAccessed = DateTime.MinValue;
+        }
+
+        // Method to lock the smart lock
+        public void Lock()
+        {
+            IsLocked = true;
+            LastAccessed = DateTime.Now;
+        }
+
+        // Method to unlock the smart lock using a pin code
+        public bool ToggleUnlock(string inputPin)
+        {
+            if (PinCode == inputPin)
+            {
+                IsLocked = !IsLocked;
                 LastAccessed = DateTime.Now;
+                return true;
             }
-
-            // Method to unlock the smart lock using a pin code
-            public bool ToggleUnlock(string inputPin)
+            else
             {
-                if (PinCode == inputPin)
-                {
-                    IsLocked = !IsLocked;
-                    LastAccessed = DateTime.Now;
-                    return true;
-                }
-                else
-                {
-                    return false; // Incorrect pin
-                }
+                return false; // Incorrect pin
             }
         }
+    }
 
 }

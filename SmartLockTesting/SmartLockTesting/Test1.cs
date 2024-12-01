@@ -11,7 +11,7 @@ namespace SmartLockTesting
         public void Fan_Speed_SetterGetter_WorksCorrectly()
         {
             // Arrange
-            var fan = new Fan();
+            var fan = new Fan("Living Room Fan", 201, "2");
 
             // Act
             fan.Speed = 3;
@@ -24,7 +24,7 @@ namespace SmartLockTesting
         public void Fan_Mode_DefaultsToNormal()
         {
             // Arrange
-            var fan = new Fan();
+            var fan = new Fan("Living Room Fan", 201, "2");
 
             // Assert
             Assert.AreEqual("Normal", fan.Mode, "Fan mode did not default to 'Normal'.");
@@ -38,7 +38,7 @@ namespace SmartLockTesting
         public void Fridge_Temperature_SetterGetter_WorksCorrectly()
         {
             // Arrange
-            var fridge = new Fridge();
+            var fridge = new Fridge("Kitchen Fridge", 301, "4");
 
             // Act
             fridge.Temperature = 5.5f;
@@ -51,7 +51,7 @@ namespace SmartLockTesting
         public void Fridge_DoorStatus_DefaultsToFalse()
         {
             // Arrange
-            var fridge = new Fridge();
+            var fridge = new Fridge("Kitchen Fridge", 301, "4");
 
             // Assert
             Assert.IsFalse(fridge.IsDoorOpen, "Fridge door status did not default to false.");
@@ -65,7 +65,7 @@ namespace SmartLockTesting
         public void SmartLock_Lock_UpdatesIsLockedAndLastAccessed()
         {
             // Arrange
-            var smartLock = new SmartLock();
+            var smartLock = new SmartLock("Front Door Lock", 401, "5");
 
             // Act
             smartLock.Lock();
@@ -79,7 +79,7 @@ namespace SmartLockTesting
         public void SmartLock_ToggleUnlock_WithCorrectPin_Unlocks()
         {
             // Arrange
-            var smartLock = new SmartLock();
+            var smartLock = new SmartLock("Front Door Lock", 401, "5");
 
             // Act
             var result = smartLock.ToggleUnlock("3765");
@@ -93,7 +93,7 @@ namespace SmartLockTesting
         public void SmartLock_ToggleUnlock_WithIncorrectPin_DoesNotUnlock()
         {
             // Arrange
-            var smartLock = new SmartLock();
+            var smartLock = new SmartLock("Front Door Lock", 401, "5");
 
             // Act
             var result = smartLock.ToggleUnlock("1234");
